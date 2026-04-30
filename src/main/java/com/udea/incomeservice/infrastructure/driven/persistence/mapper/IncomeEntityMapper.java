@@ -15,6 +15,7 @@ public class IncomeEntityMapper {
                 .description(income.getDescription())
                 .date(income.getDate())
                 .category(income.getCategory())
+                .createdAt(income.getCreatedAt())
                 .build();
     }
 
@@ -26,6 +27,7 @@ public class IncomeEntityMapper {
                 .description(entity.getDescription())
                 .date(entity.getDate())
                 .category(entity.getCategory())
+                .createdAt(entity.getCreatedAt())
                 .build();
     }
 }

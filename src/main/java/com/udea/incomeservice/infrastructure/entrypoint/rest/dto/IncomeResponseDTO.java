@@ -5,6 +5,7 @@ import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -15,4 +16,5 @@ public class IncomeResponseDTO {
     private String description;
     private LocalDate date;
     private String category;
+    private LocalDateTime createdAt;
 }
