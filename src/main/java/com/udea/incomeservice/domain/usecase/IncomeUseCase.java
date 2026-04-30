@@ -1,5 +1,6 @@
 package com.udea.incomeservice.domain.usecase;
 
+import com.udea.incomeservice.domain.exception.DomainConstants;
 import com.udea.incomeservice.domain.exception.InvalidIncomeException;
 import com.udea.incomeservice.domain.gateway.IncomeGateway;
 import com.udea.incomeservice.domain.model.Income;
@@ -28,16 +29,16 @@ public class IncomeUseCase {
 
     private void validateIncome(Income income) {
         if (income.getAmount() == null || income.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidIncomeException("El monto debe ser mayor a cero");
+            throw new InvalidIncomeException(DomainConstants.AMOUNT_MUST_BE_POSITIVE);
         }
         if (income.getCategory() == null || income.getCategory().isBlank()) {
-            throw new InvalidIncomeException("Debes seleccionar una categoría");
+            throw new InvalidIncomeException(DomainConstants.CATEGORY_REQUIRED);
         }
         if (income.getDate() == null) {
-            throw new InvalidIncomeException("La fecha es requerida");
+            throw new InvalidIncomeException(DomainConstants.DATE_REQUIRED);
         }
         if (income.getDescription() == null || income.getDescription().isBlank()) {
-            throw new InvalidIncomeException("La descripción es requerida");
+            throw new InvalidIncomeException(DomainConstants.DESCRIPTION_REQUIRED);
         }
     }
 }

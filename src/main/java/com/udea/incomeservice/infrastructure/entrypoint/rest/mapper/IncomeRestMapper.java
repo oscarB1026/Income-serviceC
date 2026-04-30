@@ -8,9 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class IncomeRestMapper {
 
-    public Income toDomain(IncomeRequestDTO dto) {
+    public Income toDomain(IncomeRequestDTO dto, Long userId) {
         return Income.builder()
-                .userId(dto.getUserId())
+                .userId(userId)
                 .amount(dto.getAmount())
                 .description(dto.getDescription())
                 .date(dto.getDate())
@@ -26,6 +26,7 @@ public class IncomeRestMapper {
                 .description(income.getDescription())
                 .date(income.getDate())
                 .category(income.getCategory())
+                .createdAt(income.getCreatedAt())
                 .build();
     }
 }

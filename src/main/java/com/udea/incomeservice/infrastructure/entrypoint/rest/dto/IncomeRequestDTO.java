@@ -1,5 +1,6 @@
 package com.udea.incomeservice.infrastructure.entrypoint.rest.dto;
 
+import com.udea.incomeservice.infrastructure.entrypoint.rest.EntryPointConstants;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,20 +12,17 @@ import java.time.LocalDate;
 @Setter
 public class IncomeRequestDTO {
 
-    @NotNull(message = "El monto es requerido")
-    @DecimalMin(value = "0.01", message = "El monto debe ser mayor a cero")
+    @NotNull(message = EntryPointConstants.AMOUNT_REQUIRED)
+    @DecimalMin(value = EntryPointConstants.AMOUNT_MIN, message = EntryPointConstants.AMOUNT_MUST_BE_POSITIVE)
     private BigDecimal amount;
 
-    @NotBlank(message = "La descripción es requerida")
-    @Size(max = 255)
+    @NotBlank(message = EntryPointConstants.DESCRIPTION_REQUIRED)
+    @Size(max = EntryPointConstants.DESCRIPTION_MAX_LENGTH)
     private String description;
 
-    @NotNull(message = "La fecha es requerida")
+    @NotNull(message = EntryPointConstants.DATE_REQUIRED)
     private LocalDate date;
 
-    @NotBlank(message = "Debes seleccionar una categoría")
+    @NotBlank(message = EntryPointConstants.CATEGORY_REQUIRED)
     private String category;
-
-    @NotNull(message = "El usuario es requerido")
-    private Long userId;
 }

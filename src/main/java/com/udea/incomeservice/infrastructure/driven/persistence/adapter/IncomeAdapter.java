@@ -7,6 +7,8 @@ import com.udea.incomeservice.infrastructure.driven.persistence.repository.Incom
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 @Component
@@ -31,7 +33,10 @@ public class IncomeAdapter implements IncomeGateway {
 
     @Override
     public List<Income> findByUserIdAndMonth(Long userId, int year, int month) {
-        return repository.findByUserIdAndMonth(userId, year, month)
+        YearMonth yearMonth = YearMonth.of(year, month);
+        LocalDate start = yearMonth.atDay(1);
+        LocalDate end = yearMonth.atEndOfMonth();
+        return repository.findByUserIdAndDateBetween(userId, start, end)
                 .stream()
                 .map(mapper::toDomain)
                 .toList();
