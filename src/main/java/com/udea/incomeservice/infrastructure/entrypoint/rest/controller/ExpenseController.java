@@ -1,5 +1,8 @@
 package com.udea.incomeservice.infrastructure.entrypoint.rest.controller;
 
+import com.udea.incomeservice.domain.exception.DomainConstants;
+import com.udea.incomeservice.domain.model.BudgetStatus;
+import com.udea.incomeservice.domain.usecase.BudgetUseCase;
 import com.udea.incomeservice.domain.usecase.ExpenseUseCase;
 import com.udea.incomeservice.infrastructure.entrypoint.rest.EntryPointConstants;
 import com.udea.incomeservice.infrastructure.entrypoint.rest.dto.ExpenseRequestDTO;
@@ -25,6 +28,7 @@ import java.util.List;
 public class ExpenseController {
 
     private final ExpenseUseCase expenseUseCase;
+    private final BudgetUseCase budgetUseCase;
     private final ExpenseRestMapper mapper;
 
     @PostMapping
@@ -34,7 +38,23 @@ public class ExpenseController {
             Authentication authentication) {
         Long userId = (Long) authentication.getPrincipal();
         var expense = expenseUseCase.registerExpense(mapper.toDomain(request, userId));
-        return ResponseEntity.status(HttpStatus.CREATED).body(mapper.toResponse(expense));
+        var response = mapper.toResponse(expense);
+
+        BudgetStatus status = budgetUseCase.checkBudgetAlert(userId, expense.getCategoryId());
+        if (status != null) {
+            String alert = buildAlert(status);
+            response = ExpenseResponseDTO.builder()
+                    .id(response.getId())
+                    .amount(response.getAmount())
+                    .description(response.getDescription())
+                    .date(response.getDate())
+                    .categoryName(response.getCategoryName())
+                    .budgetAlert(alert)
+                    .createdAt(response.getCreatedAt())
+                    .build();
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping(EntryPointConstants.USER_PATH)
@@ -59,5 +79,15 @@ public class ExpenseController {
                 .map(mapper::toResponse)
                 .toList();
         return ResponseEntity.ok(expenses);
+    }
+
+    private String buildAlert(BudgetStatus status) {
+        if (BudgetStatus.EXCEEDED.equals(status.getStatus())) {
+            return DomainConstants.BUDGET_EXCEEDED;
+        }
+        if (BudgetStatus.WARNING.equals(status.getStatus())) {
+            return String.format(DomainConstants.BUDGET_WARNING, status.getCategoryName());
+        }
+        return null;
     }
 }

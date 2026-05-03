@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
@@ -46,5 +47,12 @@ public class ExpenseAdapter implements ExpenseGateway {
                 .stream()
                 .map(mapper::toDomain)
                 .toList();
+    }
+
+    @Override
+    public BigDecimal sumByUserIdAndCategoryIdAndMonth(Long userId, Long categoryId, int year, int month) {
+        YearMonth yearMonth = YearMonth.of(year, month);
+        return repository.sumAmountByUserIdAndCategoryIdAndDateBetween(
+                userId, categoryId, yearMonth.atDay(1), yearMonth.atEndOfMonth());
     }
 }

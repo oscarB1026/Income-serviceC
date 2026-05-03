@@ -16,5 +16,6 @@ public interface ExpenseRestMapper {
     Expense toDomain(ExpenseRequestDTO dto, Long userId);
 
     @Mapping(target = "categoryName", source = "categoryName")
+    @Mapping(target = "budgetAlert", ignore = true)
     ExpenseResponseDTO toResponse(Expense expense);
 }

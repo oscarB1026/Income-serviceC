@@ -13,4 +13,7 @@ public final class DomainConstants {
     public static final String CATEGORY_NAME_REQUIRED = "El nombre de la categoría es requerido";
     public static final String CATEGORY_TYPE_INVALID = "El tipo debe ser INCOME o EXPENSE";
     public static final String CATEGORY_NOT_FOUND = "La categoría seleccionada no existe";
+    public static final String BUDGET_ALREADY_EXISTS = "Ya existe un presupuesto para esta categoría";
+    public static final String BUDGET_WARNING = "Estás cerca del límite en la categoría %s";
+    public static final String BUDGET_EXCEEDED = "Presupuesto agotado";
 }

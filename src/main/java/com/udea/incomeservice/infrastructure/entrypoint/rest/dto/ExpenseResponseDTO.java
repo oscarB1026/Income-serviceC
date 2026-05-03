@@ -15,5 +15,6 @@ public class ExpenseResponseDTO {
     private String description;
     private LocalDate date;
     private String categoryName;
+    private String budgetAlert;
     private LocalDateTime createdAt;
 }
