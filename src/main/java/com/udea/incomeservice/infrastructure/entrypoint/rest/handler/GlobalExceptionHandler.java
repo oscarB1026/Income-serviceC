@@ -1,5 +1,6 @@
 package com.udea.incomeservice.infrastructure.entrypoint.rest.handler;
 
+import com.udea.incomeservice.domain.exception.DuplicateBudgetException;
 import com.udea.incomeservice.domain.exception.DuplicateCategoryException;
 import com.udea.incomeservice.domain.exception.InvalidExpenseException;
 import com.udea.incomeservice.domain.exception.InvalidIncomeException;
@@ -29,6 +30,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DuplicateCategoryException.class)
     public ResponseEntity<ErrorResponseDTO> handleDuplicateCategory(DuplicateCategoryException ex) {
+        return buildError(HttpStatus.CONFLICT, ex.getMessage());
+    }
+
+    @ExceptionHandler(DuplicateBudgetException.class)
+    public ResponseEntity<ErrorResponseDTO> handleDuplicateBudget(DuplicateBudgetException ex) {
         return buildError(HttpStatus.CONFLICT, ex.getMessage());
     }
 
