@@ -34,21 +34,10 @@ jobs:
         run: ./mvnw -B clean verify jacoco:report -Dspring.profiles.active=test
 
       - name: Verificar reporte JaCoCo
-        run: |
-          echo "=== Buscando jacoco.xml ==="
-          find . -name "jacoco.xml" 2>/dev/null || echo "❌ jacoco.xml NO encontrado"
-          echo ""
-          echo "=== Buscando jacoco.exec ==="
-          find . -name "jacoco.exec" 2>/dev/null || echo "❌ jacoco.exec NO encontrado"
-          echo ""
-          echo "=== Tests ejecutados ==="
-          find . -name "*.xml" -path "*/surefire-reports/*" | head -10
-
-      - name: Analyze with SonarCloud
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./mvnw -B sonar:sonar -Dsonar.projectKey=fabrica-escuela_income-service
+        run: ./mvnw -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:4.0.0.4121:sonar -Dsonar.projectKey=fabrica-escuela_income-service
 
       - name: Upload test results
         if: failure()
